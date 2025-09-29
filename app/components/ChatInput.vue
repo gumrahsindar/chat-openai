@@ -61,7 +61,9 @@ watch(
       color="primary"
       variant="solid"
       icon="i-heroicons-paper-airplane"
-      class="absolute right-3 bottom-3 rounded-full"
+      class="absolute right-3 bottom-2 rounded-full"
+      :ui="{ leadingIcon: '!size-6' }"
+      size="xl"
       square
     />
   </form>
