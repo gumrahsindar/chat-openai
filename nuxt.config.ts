@@ -6,9 +6,22 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   css: ['~/assets/css/main.css'],
-  modules: ['@nuxt/fonts', '@nuxt/icon', '@nuxt/ui', '@nuxt/eslint'],
+  modules: [
+    '@nuxt/fonts',
+    '@nuxt/icon',
+    '@nuxt/ui',
+    '@nuxt/eslint',
+    '@nuxtjs/mdc',
+  ],
 
   runtimeConfig: {
     openaiApiKey: '',
+  },
+
+  mdc: {
+    highlight: {
+      theme: 'monokai',
+      langs: ['html', 'markdown', 'vue', 'typescript', 'json', 'javascript'],
+    },
   },
 })
