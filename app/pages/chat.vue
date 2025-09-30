@@ -1,8 +1,17 @@
 <script setup lang="ts">
 const { chat, messages, sendMessage } = useChat()
 
+const appConfig = useAppConfig()
+
+const title = computed(() => {
+  if (chat.value?.title) {
+    return `${chat.value.title} - ${appConfig.title}`
+  }
+  return appConfig.title
+})
+
 useHead({
-  title: chat.value.title || 'Chat',
+  title,
 })
 </script>
 
