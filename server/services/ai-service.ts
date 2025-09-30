@@ -6,15 +6,13 @@ import type { LanguageModel, ModelMessage } from 'ai'
 
 export const createOllamaModel = () => {
   const ollama = createOllama()
-
-  return ollama('llama3.2')
+  return ollama('llama3.2') as unknown as LanguageModel
 }
 
-export const createOpenAIModel = (apiKey: string) => {
+export const createOpenAIModel = (apiKey: string): LanguageModel => {
   const openai = createOpenAI({
     apiKey,
   })
-
   return openai('gpt-4o-mini')
 }
 
