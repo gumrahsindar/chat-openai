@@ -13,8 +13,16 @@ const title = computed(() => {
 useHead({
   title,
 })
+
+const typing = ref(false)
+
+async function sendMessageHandler(message: string) {
+  typing.value = true
+  await sendMessage(message)
+  typing.value = false
+}
 </script>
 
 <template>
-  <ChatWindow :chat :messages @send-message="sendMessage" />
+  <ChatWindow :chat :messages :typing @send-message="sendMessageHandler" />
 </template>
