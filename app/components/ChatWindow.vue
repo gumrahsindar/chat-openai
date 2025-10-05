@@ -3,7 +3,7 @@ import type { Chat, ChatMessage } from '~/types'
 
 const props = defineProps<{
   messages: ChatMessage[]
-  chat: Chat
+  chat: Chat | undefined
   typing?: boolean
 }>()
 
