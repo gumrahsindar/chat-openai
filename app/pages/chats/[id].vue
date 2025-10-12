@@ -1,13 +1,18 @@
 <script setup lang="ts">
+import type { Chat } from '~/types'
 const route = useRoute()
 console.log(route.params)
-const { chat, messages, sendMessage } = useChat(route.params.id as string)
+const {
+  chat: chatFromChats,
+  messages,
+  sendMessage,
+} = useChat(route.params.id as string)
 
 const appConfig = useAppConfig()
 
 const title = computed(() => {
-  if (chat.value?.title) {
-    return `${chat.value.title} - ${appConfig.title}`
+  if (chatFromChats.value?.title) {
+    return `${chatFromChats.value.title} - ${appConfig.title}`
   }
   return appConfig.title
 })
@@ -15,6 +20,12 @@ const title = computed(() => {
 useHead({
   title,
 })
+
+if (!chatFromChats.value) {
+  await navigateTo('/', { replace: true })
+}
+
+const chat = computed(() => chatFromChats.value as Chat)
 
 const typing = ref(false)
 
