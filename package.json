@@ -10,24 +10,25 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^2.0.42",
-    "@nuxt/eslint": "1.3.0",
-    "@nuxt/fonts": "0.11.1",
-    "@nuxt/icon": "1.11.0",
-    "@nuxt/ui": "3.0.2",
-    "ai": "^5.0.59",
-    "eslint": "^9.0.0",
-    "nuxt": "^4.1.2",
+    "@ai-sdk/openai": "^2.0.50",
+    "@nuxt/eslint": "1.9.0",
+    "@nuxt/fonts": "0.11.4",
+    "@nuxt/icon": "2.0.0",
+    "@nuxt/ui": "4.0.1",
+    "ai": "^5.0.68",
+    "eslint": "^9.37.0",
+    "nuxt": "^4.1.3",
     "ollama-ai-provider": "^1.2.0",
-    "tailwindcss": "^4.1.3",
-    "typescript": "^5.6.3",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.9.3",
+    "vue": "^3.5.22",
+    "vue-router": "^4.5.1"
   },
   "packageManager": "pnpm@10.17.1+sha512.17c560fca4867ae9473a3899ad84a88334914f379be46d455cbf92e5cf4b39d34985d452d2583baf19967fa76cb5c17bc9e245529d0b98745721aa7200ecaf7a",
   "devDependencies": {
     "@iconify-json/heroicons": "^1.2.3",
-    "@nuxtjs/mdc": "^0.17.4",
-    "@types/node": "^24.6.1"
+    "@iconify-json/lucide": "^1.2.69",
+    "@nuxtjs/mdc": "^0.18.0",
+    "@types/node": "^24.7.2"
   }
 }
