@@ -1,17 +1,30 @@
 <script setup lang="ts">
 const appConfig = useAppConfig()
 
+const emit = defineEmits<{
+  (e: 'toggle-sidebar'): void
+}>()
+
 const { createChatAndNavigate } = useChats()
 
 async function handleCreateChat() {
   await createChatAndNavigate()
+}
+
+function handleToggleSidebar() {
+  emit('toggle-sidebar')
 }
 </script>
 
 <template>
   <header class="app-header">
     <div class="header-left">
-      <UButton icon="i-lucide-menu" color="primary" variant="soft" />
+      <UButton
+        icon="i-lucide-menu"
+        color="primary"
+        variant="soft"
+        @click="handleToggleSidebar"
+      />
       <UButton icon="i-lucide-plus" @click="handleCreateChat">
         New Chat
       </UButton>
