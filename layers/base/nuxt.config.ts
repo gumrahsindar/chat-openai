@@ -1,0 +1,17 @@
+// https://nuxt.com/docs/api/configuration/nuxt-config
+export default defineNuxtConfig({
+  compatibilityDate: '2024-11-01',
+  devtools: { enabled: true },
+  future: {
+    compatibilityVersion: 4,
+  },
+  css: ['~/assets/css/main.css'],
+  modules: ['@nuxt/fonts', '@nuxt/icon', '@nuxt/ui', '@nuxtjs/mdc'],
+
+  mdc: {
+    highlight: {
+      theme: 'monokai',
+      langs: ['html', 'markdown', 'vue', 'typescript', 'json', 'javascript'],
+    },
+  },
+})
