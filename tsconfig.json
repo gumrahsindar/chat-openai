@@ -1,4 +1,12 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json"
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "~/*": ["./*", "./layers/base/app/*", "./layers/chat/app/*", "./app/*"],
+      "@/*": ["./*", "./layers/base/app/*", "./layers/chat/app/*", "./app/*"],
+      "#app": ["./.nuxt/types/app"],
+      "#build": ["./.nuxt/types/build"]
+    }
+  }
 }
