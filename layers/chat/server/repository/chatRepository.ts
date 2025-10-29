@@ -1,11 +1,4 @@
 import { v4 as uuidv4 } from 'uuid'
-import type {
-  Chat,
-  ChatMessage,
-  ChatWithProject,
-  Project,
-} from '../../shared/types/types'
-import { MOCK_CHAT } from '../../shared/utils/mockData'
 import { getProjectById } from './projectRepository'
 
 const chats: Chat[] = [MOCK_CHAT]
