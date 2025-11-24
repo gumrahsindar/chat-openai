@@ -1,40 +1,39 @@
 <script setup lang="ts">
 const route = useRoute()
-console.log(route.params)
 const {
   chat: chatFromChats,
   messages,
   sendMessage,
+  fetchMessages,
 } = useChat(route.params.id as string)
 
-const appConfig = useAppConfig()
-
-const title = computed(() => {
-  if (chatFromChats.value?.title) {
-    return `${chatFromChats.value.title} - ${appConfig.title}`
-  }
-  return appConfig.title
-})
-
-useHead({
-  title,
-})
+await fetchMessages()
 
 if (!chatFromChats.value) {
   await navigateTo('/', { replace: true })
 }
-
 const chat = computed(() => chatFromChats.value as Chat)
 
 const typing = ref(false)
 
-async function sendMessageHandler(message: string) {
+const handleSendMessage = async (message: string) => {
   typing.value = true
   await sendMessage(message)
   typing.value = false
 }
+
+const appConfig = useAppConfig()
+const title = computed(() =>
+  chat.value?.title
+    ? `${chat.value.title} - ${appConfig.title}`
+    : appConfig.title
+)
+
+useHead({
+  title,
+})
 </script>
 
 <template>
-  <ChatWindow :chat :messages :typing @send-message="sendMessageHandler" />
+  <ChatWindow :typing :chat :messages @send-message="handleSendMessage" />
 </template>
