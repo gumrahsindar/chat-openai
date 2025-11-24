@@ -1,9 +1,7 @@
 export default function useChats() {
-  const {
-    data: chats,
-    execute,
-    status,
-  } = useFetch<Chat[]>('/api/chats', {
+  const chats = useState<Chat[]>('chats', () => [])
+
+  const { data, execute, status } = useFetch<Chat[]>('/api/chats', {
     immediate: false,
     default: () => [],
   })
@@ -11,6 +9,7 @@ export default function useChats() {
   async function fetchChats() {
     if (status.value === 'pending') return
     await execute()
+    chats.value = data.value
   }
 
   function createChat(options: { projectId?: string } = {}) {
