@@ -25,10 +25,10 @@ const handleSendMessage = async (message: string) => {
 }
 
 const appConfig = useAppConfig()
-const title = computed(() =>
+const title = computed<string>(() =>
   chat.value?.title
-    ? `${chat.value.title} - ${appConfig.title}`
-    : appConfig.title
+    ? `${chat.value.title} - ${String(appConfig.title)}`
+    : String(appConfig.title)
 )
 
 useHead({
