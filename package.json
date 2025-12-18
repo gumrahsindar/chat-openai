@@ -32,6 +32,7 @@
     "@iconify-json/heroicons": "^1.2.3",
     "@iconify-json/lucide": "^1.2.69",
     "@nuxtjs/mdc": "^0.18.0",
-    "@types/node": "^24.7.2"
+    "@types/node": "^24.7.2",
+    "baseline-browser-mapping": "^2.9.9"
   }
 }
