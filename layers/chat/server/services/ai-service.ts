@@ -1,35 +1,35 @@
-import { generateText } from 'ai'
-import { createOpenAI } from '@ai-sdk/openai'
-import { createOllama } from 'ollama-ai-provider'
+import { generateText, streamText } from "ai";
+import { createOpenAI } from "@ai-sdk/openai";
+import { createOllama } from "ollama-ai-provider";
 
-import type { LanguageModel, ModelMessage } from 'ai'
+import type { LanguageModel, ModelMessage } from "ai";
 
 export const createOllamaModel = () => {
-  const ollama = createOllama()
-  return ollama('llama3.2') as unknown as LanguageModel
-}
+  const ollama = createOllama();
+  return ollama("llama3.2") as unknown as LanguageModel;
+};
 
 export const createOpenAIModel = (apiKey: string): LanguageModel => {
   const openai = createOpenAI({
     apiKey,
-  })
-  return openai('gpt-4o-mini')
-}
+  });
+  return openai("gpt-4o-mini");
+};
 
 export async function generateChatResponse(
   model: LanguageModel,
   messages: ModelMessage[]
 ) {
   if (!Array.isArray(messages) || messages.length === 0) {
-    throw new Error('Invalid messages format')
+    throw new Error("Invalid messages format");
   }
 
   const response = await generateText({
     model,
     messages,
-  })
+  });
 
-  return response.text.trim()
+  return response.text.trim();
 }
 
 export async function generateChatTitle(
@@ -40,15 +40,29 @@ export async function generateChatTitle(
     model,
     messages: [
       {
-        role: 'system',
+        role: "system",
         content:
-          'You are a helpful assistant that generates concise, descriptive titles for chat conversations. Generate a title that captures the essence of the first message in 3 short words or less.',
+          "You are a helpful assistant that generates concise, descriptive titles for chat conversations. Generate a title that captures the essence of the first message in 3 short words or less.",
       },
       {
-        role: 'user',
+        role: "user",
         content: firstMessage,
       },
     ],
-  })
-  return response.text.trim()
+  });
+  return response.text.trim();
+}
+
+export async function streamChatResponse(
+  model: LanguageModel,
+  messages: ModelMessage[]
+) {
+  if (!Array.isArray(messages) || messages.length === 0) {
+    throw new Error("Invalid messages format");
+  }
+
+  return streamText({
+    model,
+    messages,
+  }).textStream;
 }
