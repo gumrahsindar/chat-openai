@@ -14,8 +14,18 @@ export default function useChat(chatId: string) {
 
   async function fetchMessages({
     refresh = false,
-  }: { refresh?: boolean } = {}) {
-    if ((!refresh && status.value !== "idle") || !chat.value) return;
+  }: {
+    refresh?: boolean;
+  } = {}) {
+    const hasExistingMessages = messages.value.length > 1;
+    const isRequestInProgress = status.value !== "idle";
+    const shouldSkipDueToExistingState =
+      !refresh && (hasExistingMessages || isRequestInProgress);
+
+    if (shouldSkipDueToExistingState || !chat.value) {
+      return;
+    }
+
     await execute();
     chat.value.messages = data.value;
   }
@@ -39,14 +49,14 @@ export default function useChat(chatId: string) {
       generateChatTitle(message);
     }
 
-    const optimisticMessage: ChatMessage = {
-      id: `optimistic-message-${Date.now()}`,
+    const optimisticUserMessage: ChatMessage = {
+      id: `optimistic-user-message-${Date.now()}`,
       role: "user",
       content: message,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    messages.value.push(optimisticMessage);
+    messages.value.push(optimisticUserMessage);
 
     const userMessageIndex = messages.value.length - 1;
 
@@ -61,10 +71,9 @@ export default function useChat(chatId: string) {
           },
         }
       );
-
       messages.value[userMessageIndex] = newMessage;
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error("Error sending user message", error);
       messages.value.splice(userMessageIndex, 1);
       return;
     }
@@ -91,14 +100,17 @@ export default function useChat(chatId: string) {
           },
         }
       );
-      const decoederStream = response.pipeThrough(new TextDecoderStream());
-      const reader = decoederStream.getReader();
+
+      const decodedStream = response.pipeThrough(new TextDecoderStream());
+
+      const reader = decodedStream.getReader();
       await reader
         .read()
         .then(function processText({ done, value }): Promise<void> | void {
           if (done) {
             return;
           }
+
           lastMessage.content += value;
           return reader.read().then(processText);
         });
