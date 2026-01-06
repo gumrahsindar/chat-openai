@@ -9,7 +9,7 @@ export default function useChat(chatId: string) {
     {
       default: () => [],
       immediate: false,
-    }
+    },
   );
 
   async function fetchMessages({
@@ -69,7 +69,7 @@ export default function useChat(chatId: string) {
             content: message,
             role: "user",
           },
-        }
+        },
       );
       messages.value[userMessageIndex] = newMessage;
     } catch (error) {
@@ -98,22 +98,23 @@ export default function useChat(chatId: string) {
           body: {
             messages: messages.value,
           },
-        }
+        },
       );
 
       const decodedStream = response.pipeThrough(new TextDecoderStream());
 
       const reader = decodedStream.getReader();
-      await reader
-        .read()
-        .then(function processText({ done, value }): Promise<void> | void {
-          if (done) {
-            return;
-          }
+      await reader.read().then(function processText({
+        done,
+        value,
+      }): Promise<void> | void {
+        if (done) {
+          return;
+        }
 
-          lastMessage.content += value;
-          return reader.read().then(processText);
-        });
+        lastMessage.content += value;
+        return reader.read().then(processText);
+      });
     } catch (error) {
       console.error("Error streaming message:", error);
     } finally {
@@ -123,10 +124,41 @@ export default function useChat(chatId: string) {
     chat.value.updatedAt = new Date();
   }
 
+  async function assignToProject(projectId: string | null) {
+    if (!chat.value) return;
+
+    const originalProjectId = chat.value.projectId;
+
+    // Optimistically update the chat
+    chat.value.projectId = projectId || undefined;
+
+    try {
+      const updatedChat = await $fetch<Chat>(`/api/chats/${chatId}`, {
+        method: "PUT",
+        body: {
+          projectId,
+        },
+      });
+
+      // Update the chat in the chats list
+      const chatIndex = chats.value.findIndex((c) => c.id === chatId);
+      if (chatIndex !== -1 && chats.value[chatIndex]) {
+        chats.value[chatIndex].projectId = updatedChat.projectId;
+        chats.value[chatIndex].updatedAt = updatedChat.updatedAt;
+      }
+    } catch (error) {
+      console.error("Error assigning chat to project", error);
+      // Revert optimistic update
+      chat.value.projectId = originalProjectId;
+      throw error;
+    }
+  }
+
   return {
     chat,
     messages,
     sendMessage,
     fetchMessages,
+    assignToProject,
   };
 }
