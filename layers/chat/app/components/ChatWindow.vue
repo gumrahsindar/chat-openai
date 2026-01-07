@@ -102,7 +102,7 @@ function closeAssignModal() {
       </template>
     </UContainer>
 
-    <AssignToProjectModal
+    <LazyAssignToProjectModal
       v-if="isAssignModalOpen"
       :chat-id="chat.id"
       @close="closeAssignModal"
