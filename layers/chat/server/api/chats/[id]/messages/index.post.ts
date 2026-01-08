@@ -10,7 +10,10 @@ export default defineEventHandler(async (event) => {
   );
 
   if (!success) {
-    return 400;
+    throw createError({
+      statusCode: 400,
+      message: "Invalid request body",
+    });
   }
 
   return createMessageForChat({
