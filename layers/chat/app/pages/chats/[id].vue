@@ -29,16 +29,49 @@ const title = computed<string>(() =>
     : (appConfig.title as string)
 );
 
+async function handleError() {
+  await navigateTo("/", { replace: true });
+}
+
 useHead({
   title,
 });
 </script>
 
 <template>
-  <ChatWindow
-    :typing
-    :chat
-    :messages
-    @send-message="handleSendMessage"
-  />
+  <div class="h-full flex flex-col">
+    <NuxtErrorBoundary>
+      <ChatWindow
+        :typing
+        :chat
+        :messages
+        @send-message="handleSendMessage"
+      />
+
+      <template #error="{ error }">
+        <UContainer class="flex justify-center items-center h-full p-4">
+          <UCard
+            variant="soft"
+            class="min-w-md"
+          >
+            <template #header>
+              <h1 class="text-lg font-bold">Chat Error</h1>
+            </template>
+
+            <p>{{ error?.message || "Bir hata oluştu" }}</p>
+
+            <UButton
+              class="mt-4"
+              color="primary"
+              variant="soft"
+              icon="i-heroicons-arrow-left"
+              @click="handleError"
+            >
+              Ana Sayfaya Dön
+            </UButton>
+          </UCard>
+        </UContainer>
+      </template>
+    </NuxtErrorBoundary>
+  </div>
 </template>
